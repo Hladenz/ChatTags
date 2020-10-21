@@ -3,6 +3,7 @@ package com.abderrahimlach.commands;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -90,7 +91,16 @@ public class TagsCommand implements CommandExecutor {
 						}
 						
 					}else if(args[0].equalsIgnoreCase("apply")) {
-						Profile profile = Profile.getProfileByUuid(Bukkit.getPlayer(args[1]).getUniqueId());
+
+						Profile profile = Profile.getProfileByUuid(Bukkit.getOfflinePlayer(args[1]).getUniqueId());
+						if (profile == null){
+							if (Bukkit.getOfflinePlayer(args[1]) == null){
+								sender.sendMessage("This Player Does not Exist");
+								return true;
+							}
+							profile = new Profile(Bukkit.getOfflinePlayer(args[1]).getUniqueId());
+							profile.save(Bukkit.getOfflinePlayer(args[1]));
+						}
 						TagsManager tag = new TagsManager(args[2]);
 						if(tag.isAlreadyExists()) {
 							if(!profile.containsTag(tag.getName())) {
