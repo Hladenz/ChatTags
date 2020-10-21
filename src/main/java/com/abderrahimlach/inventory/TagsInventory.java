@@ -92,7 +92,7 @@ public class TagsInventory {
 					lore.add("§aClick to equip");
 				}
 			}else {
-				lore.add("§cYou don't own this tag");
+				continue;
 			}
 			metaa.setDisplayName(tags.getData().getColor()+tags.getData().getName());
 			metaa.setLore(lore);
