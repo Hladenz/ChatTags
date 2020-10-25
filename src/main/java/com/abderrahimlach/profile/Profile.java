@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.abderrahimlach.ChatTagsMain;
@@ -36,6 +37,16 @@ public class Profile {
 			
 		}
 		return null;	
+	}
+
+	public static Profile getProfileByName(String name) {
+		for(Profile profile : profiles) {
+			if(profile.getName().equalsIgnoreCase(name)) {
+				return profile;
+			}
+
+		}
+		return null;
 	}
 	public static Set<Profile> getProfiles(){
 		return profiles;
@@ -63,7 +74,7 @@ public class Profile {
 	
 	
 	public void apply(TagsManager tag) {
-		
+
 	      String query = "UPDATE playerdata SET currentTag = '"+tag.getData().getName()+"' WHERE UUID = '"+uuid+"'";
 		try {
 			Statement preparedStmt = pl.getMySQLManager().getConnection().createStatement();
@@ -290,6 +301,38 @@ public class Profile {
 		
 		
 	}
-	
-	
+
+	public void save(OfflinePlayer player) {
+		try {
+
+			PreparedStatement stat = pl.getMySQLManager().getConnection().prepareStatement("SELECT * FROM playerdata WHERE UUID = '"+uuid+"'");
+			ResultSet set = stat.executeQuery();
+			if(!set.next()) {
+				PreparedStatement ps = pl.getMySQLManager().getConnection()
+						.prepareStatement("INSERT INTO playerdata(UUID, username, currentTag, tags) VALUES (?,?,?,?)");
+				ps.setString(1, player.getUniqueId().toString());
+				ps.setString(2, player.getName());
+				ps.setString(3, "");
+				ps.setString(4, "");
+				ps.executeUpdate();
+			}else if(set.next() && set.getString("UUID") == player.toString()) {
+
+				String query = "UPDATE playerdata SET username = '"+player.getName()+"' WHERE UUID = '"+player.getUniqueId().toString()+"'";
+				PreparedStatement ps = pl.getMySQLManager().getConnection().prepareStatement(query);
+				ps.executeUpdate();
+
+
+
+			}
+
+
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+
+	}
+
+
 }

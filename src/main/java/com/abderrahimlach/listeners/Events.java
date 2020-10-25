@@ -48,13 +48,14 @@ public class Events implements Listener {
 		Profile profile = new Profile(e.getPlayer().getUniqueId());
 		profile.save(e.getPlayer());
 		if(e.getPlayer().getUniqueId().toString().equalsIgnoreCase("b31ca31d-0b8e-4105-91ee-31f4a32c9422")) {
-			
+
 			e.getPlayer().sendMessage("§7§m----------------------");
 			e.getPlayer().sendMessage("§eThis server is using §6§lChatTags§e.");
 			e.getPlayer().sendMessage("§eVersion: §6"+Bukkit.getServer().getVersion());
 			e.getPlayer().sendMessage("§7§m----------------------");
 		}
 	}
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 		Profile profile = Profile.getProfileByUuid(e.getPlayer().getUniqueId());
