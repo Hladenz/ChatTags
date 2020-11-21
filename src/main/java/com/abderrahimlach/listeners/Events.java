@@ -82,7 +82,7 @@ public class Events implements Listener {
 	// Tags Pages.
 	@EventHandler
 	public void onInv(InventoryClickEvent e) {
-		if(e.getInventory().getName().contains("Chat Tags")) {
+		if(e.getView().getTitle().contains("Chat Tags")) {
 			ItemStack item = e.getCurrentItem();
 			Player player = (Player)e.getWhoClicked();
 			if(item != null && item.getType() != Material.AIR) {
